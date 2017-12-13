@@ -41,7 +41,7 @@ _WR_SCRATCH = const(0x4E)
 _CONVERSION_TIMEOUT = const(1)
 RESOLUTION = (9, 10, 11, 12)
 
-class DS18X20:
+class DS18X20(object):
     """Class which provides interface to DS18X20 temperature sensor."""
 
     def __init__(self, bus, address):
@@ -75,16 +75,16 @@ class DS18X20:
         self._write_scratch(self._buf)
 
     def _convert_temp(self, timeout=_CONVERSION_TIMEOUT):
-        with self._device as d:
-            d.write(bytearray([_CONVERT]))
+        with self._device as dev:
+            dev.write(bytearray([_CONVERT]))
             start_time = time.monotonic()
             if timeout > 0:
-                d.readinto(self._buf, end=1)
+                dev.readinto(self._buf, end=1)
                 # 0 = conversion in progress, 1 = conversion done
                 while self._buf[0] == 0x00:
                     if time.monotonic() - start_time > timeout:
                         raise Exception('Timeout waiting for conversion to complete.')
-                    d.readinto(self._buf, end=1)
+                    dev.readinto(self._buf, end=1)
         return time.monotonic() - start_time
 
     def _read_temp(self):
@@ -103,12 +103,12 @@ class DS18X20:
             return t / 16
 
     def _read_scratch(self):
-        with self._device as d:
-            d.write(bytearray([_RD_SCRATCH]))
-            d.readinto(self._buf)
+        with self._device as dev:
+            dev.write(bytearray([_RD_SCRATCH]))
+            dev.readinto(self._buf)
         return self._buf
 
     def _write_scratch(self, buf):
-        with self._device as d:
-            d.write(bytearray([_WR_SCRATCH]))
-            d.write(buf, end=3)
+        with self._device as dev:
+            dev.write(bytearray([_WR_SCRATCH]))
+            dev.write(buf, end=3)

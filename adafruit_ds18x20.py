@@ -66,7 +66,7 @@ class DS18X20(object):
     @resolution.setter
     def resolution(self, bits):
         if bits not in RESOLUTION:
-            raise ValueError('Incorrect resolution.')
+            raise ValueError('Incorrect resolution. Must be 9, 10, 11, or 12.')
         self._buf[0] = 0  # TH register
         self._buf[1] = 0  # TL register
         self._buf[2] = RESOLUTION.index(bits) << 5 | 0x1F # configuration register
@@ -86,6 +86,7 @@ class DS18X20(object):
         return time.monotonic() - start_time
 
     def _read_temp(self):
+        # pylint: disable=invalid-name
         buf = self._read_scratch()
         if self._address.family_code == 0x10:
             if buf[1]:

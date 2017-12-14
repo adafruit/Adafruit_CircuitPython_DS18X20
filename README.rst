@@ -75,4 +75,4 @@ Then run the build:
 
 .. code-block:: shell
 
-    circuitpython-build-bundles --filename_prefix {% if cookiecutter.library_prefix %}{{ cookiecutter.library_prefix | lower }}-{% endif %}circuitpython-{{ cookiecutter.library_name | lower }} --library_location .
+    circuitpython-build-bundles --filename_prefix adafruit-circuitpython-ds18x20 --library_location .

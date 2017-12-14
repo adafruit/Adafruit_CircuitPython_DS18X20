@@ -35,9 +35,9 @@ import time
 from adafruit_onewire.device import OneWireDevice
 from micropython import const
 
-_CONVERT = const(0x44)
-_RD_SCRATCH = const(0xBE)
-_WR_SCRATCH = const(0x4E)
+_CONVERT = b'\x44'
+_RD_SCRATCH = b'\xBE'
+_WR_SCRATCH = b'\x4E'
 _CONVERSION_TIMEOUT = const(1)
 RESOLUTION = (9, 10, 11, 12)
 
@@ -50,7 +50,7 @@ class DS18X20(object):
             self._device = OneWireDevice(bus, address)
             self._buf = bytearray(9)
         else:
-            raise Exception('Incorrect family code in device address.')
+            raise ValueError('Incorrect family code in device address.')
 
     @property
     def temperature(self):
@@ -65,25 +65,23 @@ class DS18X20(object):
 
     @resolution.setter
     def resolution(self, bits):
+        if bits not in RESOLUTION:
+            raise ValueError('Incorrect resolution.')
         self._buf[0] = 0  # TH register
         self._buf[1] = 0  # TL register
-        try:
-            # configuration register
-            self._buf[2] = RESOLUTION.index(bits) << 5 | 0x1F
-        except ValueError:
-            raise Exception('Incorrect resolution.')
+        self._buf[2] = RESOLUTION.index(bits) << 5 | 0x1F # configuration register
         self._write_scratch(self._buf)
 
     def _convert_temp(self, timeout=_CONVERSION_TIMEOUT):
         with self._device as dev:
-            dev.write(bytearray([_CONVERT]))
+            dev.write(_CONVERT)
             start_time = time.monotonic()
             if timeout > 0:
                 dev.readinto(self._buf, end=1)
                 # 0 = conversion in progress, 1 = conversion done
                 while self._buf[0] == 0x00:
                     if time.monotonic() - start_time > timeout:
-                        raise Exception('Timeout waiting for conversion to complete.')
+                        raise RuntimeError('Timeout waiting for conversion to complete.')
                     dev.readinto(self._buf, end=1)
         return time.monotonic() - start_time
 
@@ -104,11 +102,11 @@ class DS18X20(object):
 
     def _read_scratch(self):
         with self._device as dev:
-            dev.write(bytearray([_RD_SCRATCH]))
+            dev.write(_RD_SCRATCH)
             dev.readinto(self._buf)
         return self._buf
 
     def _write_scratch(self, buf):
         with self._device as dev:
-            dev.write(bytearray([_WR_SCRATCH]))
+            dev.write(_WR_SCRATCH)
             dev.write(buf, end=3)

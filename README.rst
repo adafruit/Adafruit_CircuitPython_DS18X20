@@ -10,6 +10,10 @@ Introduction
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
+.. image:: https://travis-ci.org/adafruit/Adafruit_CircuitPython_DS18X20.svg?branch=master
+    :target: https://travis-ci.org/adafruit/Adafruit_CircuitPython_DS18X20
+    :alt: Build Status
+
 CircuitPython driver for Dallas 1-Wire temperature sensor.
 
 Dependencies

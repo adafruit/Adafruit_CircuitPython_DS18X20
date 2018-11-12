@@ -18,17 +18,17 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='adafruit-circuitpython-ds2413',
+    name='adafruit-circuitpython-ds18x20',
 
     use_scm_version=True,
     setup_requires=['setuptools_scm'],
 
-    description='CircuitPython library for DS2413 1-wire two channel GPIO breakout.',
+    description='CircuitPython driver for Dallas 1-Wire temperature sensor.',
     long_description=long_description,
     long_description_content_type='text/x-rst',
 
     # The project's main homepage.
-    url='https://github.com/adafruit/Adafruit_CircuitPython_DS2413',
+    url='https://github.com/adafruit/Adafruit_CircuitPython_DS18X20',
 
     # Author details
     author='Adafruit Industries',
@@ -52,9 +52,10 @@ setup(
     ],
 
     # What does your project relate to?
-    keywords='adafruit 1-wire gpio controller hardware breakout micropython circuitpython',
+    keywords='adafruit 1-wire temperature sensor ds18x20 '
+             'hardware breakout micropython circuitpython',
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    py_modules=['adafruit_ds2413'],
+    py_modules=['adafruit_ds18x20'],
 )

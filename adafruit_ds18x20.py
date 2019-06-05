@@ -45,7 +45,7 @@ class DS18X20(object):
     """Class which provides interface to DS18X20 temperature sensor."""
 
     def __init__(self, bus, address):
-        if address.family_code == 0x10 or address.family_code == 0x28:
+        if address.family_code == 0x10 or address.family_code == 0x28 or address.family_code == 0x22:
             self._address = address
             self._device = OneWireDevice(bus, address)
             self._buf = bytearray(9)

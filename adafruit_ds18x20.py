@@ -40,6 +40,8 @@ _RD_SCRATCH = b'\xBE'
 _WR_SCRATCH = b'\x4E'
 _CONVERSION_TIMEOUT = const(1)
 RESOLUTION = (9, 10, 11, 12)
+# Maximum conversion delay in seconds, from DS18B20 datasheet.
+_CONVERSION_DELAY = {9:0.09375, 10:0.1875, 11:0.375, 12:0.750}
 
 class DS18X20(object):
     """Class which provides interface to DS18X20 temperature sensor."""
@@ -49,6 +51,7 @@ class DS18X20(object):
             self._address = address
             self._device = OneWireDevice(bus, address)
             self._buf = bytearray(9)
+            self._conv_delay = _CONVERSION_DELAY[12]  # pessimistic default
         else:
             raise ValueError('Incorrect family code in device address.')
 
@@ -111,3 +114,15 @@ class DS18X20(object):
         with self._device as dev:
             dev.write(_WR_SCRATCH)
             dev.write(buf, end=3)
+
+    def start_temperature_read(self):
+        """Start asynchronous conversion, returns immediately.
+        Returns maximum conversion delay [seconds] based on resolution."""
+        with self._device as dev:
+            dev.write(_CONVERT)
+        return _CONVERSION_DELAY[self.resolution]
+    
+    def read_temperature(self):
+        """Read the temperature. No polling of the conversion busy bit
+        (assumes that the conversion has completed)."""
+        return self._read_temp()

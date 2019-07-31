@@ -17,12 +17,15 @@ ow_bus = OneWireBus(board.D1)
 
 # Scan for sensors and grab the first one found.
 ds18 = DS18X20(ow_bus, ow_bus.scan()[0])
+ds18.resolution = 12
 
 # Main loop to print the temperature every second.
 while True:
     conversion_delay = ds18.start_temperature_read()
     conversion_ready_at = time.monotonic() + conversion_delay
-    if time.monotonic() < conversion_ready_at:
-        print("waiting...")
-    print('Temperature: {0:0.3f}C'.format(ds18.read_temperature()))
+    print("waiting", end="")
+    while time.monotonic() < conversion_ready_at:
+        print(".", end="")
+        time.sleep(0.1)
+    print('\nTemperature: {0:0.3f}C\n'.format(ds18.read_temperature()))
     time.sleep(1.0)

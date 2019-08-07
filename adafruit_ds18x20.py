@@ -121,7 +121,7 @@ class DS18X20(object):
         with self._device as dev:
             dev.write(_CONVERT)
         return _CONVERSION_DELAY[self.resolution]
-    
+
     def read_temperature(self):
         """Read the temperature. No polling of the conversion busy bit
         (assumes that the conversion has completed)."""

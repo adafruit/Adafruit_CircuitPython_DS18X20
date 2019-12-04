@@ -4,10 +4,10 @@
 # the conversion is in progress.
 # Author: Louis Bertrand, based on original by Tony DiCola
 
+# A 4.7Kohm pullup between DATA and POWER is REQUIRED!
+
 import time
-
 import board
-
 from adafruit_onewire.bus import OneWireBus
 from adafruit_ds18x20 import DS18X20
 

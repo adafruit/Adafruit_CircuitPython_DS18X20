@@ -1,9 +1,10 @@
 # Simple demo of printing the temperature from the first found DS18x20 sensor every second.
 # Author: Tony DiCola
+
+# A 4.7Kohm pullup between DATA and POWER is REQUIRED!
+
 import time
-
 import board
-
 from adafruit_onewire.bus import OneWireBus
 from adafruit_ds18x20 import DS18X20
 

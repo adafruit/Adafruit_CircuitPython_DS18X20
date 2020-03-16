@@ -27,5 +27,5 @@ while True:
     while time.monotonic() < conversion_ready_at:
         print(".", end="")
         time.sleep(0.1)
-    print('\nTemperature: {0:0.3f}C\n'.format(ds18.read_temperature()))
+    print("\nTemperature: {0:0.3f}C\n".format(ds18.read_temperature()))
     time.sleep(1.0)

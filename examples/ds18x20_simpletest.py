@@ -17,5 +17,5 @@ ds18 = DS18X20(ow_bus, ow_bus.scan()[0])
 
 # Main loop to print the temperature every second.
 while True:
-    print('Temperature: {0:0.3f}C'.format(ds18.temperature))
+    print("Temperature: {0:0.3f}C".format(ds18.temperature))
     time.sleep(1.0)

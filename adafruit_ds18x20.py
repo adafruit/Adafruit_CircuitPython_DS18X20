@@ -32,18 +32,19 @@ __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_DS18x20.git"
 
 import time
-from adafruit_onewire.device import OneWireDevice
 from micropython import const
+from adafruit_onewire.device import OneWireDevice
 
-_CONVERT = b'\x44'
-_RD_SCRATCH = b'\xBE'
-_WR_SCRATCH = b'\x4E'
+_CONVERT = b"\x44"
+_RD_SCRATCH = b"\xBE"
+_WR_SCRATCH = b"\x4E"
 _CONVERSION_TIMEOUT = const(1)
 RESOLUTION = (9, 10, 11, 12)
 # Maximum conversion delay in seconds, from DS18B20 datasheet.
-_CONVERSION_DELAY = {9:0.09375, 10:0.1875, 11:0.375, 12:0.750}
+_CONVERSION_DELAY = {9: 0.09375, 10: 0.1875, 11: 0.375, 12: 0.750}
 
-class DS18X20(object):
+
+class DS18X20:
     """Class which provides interface to DS18X20 temperature sensor."""
 
     def __init__(self, bus, address):
@@ -53,7 +54,7 @@ class DS18X20(object):
             self._buf = bytearray(9)
             self._conv_delay = _CONVERSION_DELAY[12]  # pessimistic default
         else:
-            raise ValueError('Incorrect family code in device address.')
+            raise ValueError("Incorrect family code in device address.")
 
     @property
     def temperature(self):
@@ -69,10 +70,10 @@ class DS18X20(object):
     @resolution.setter
     def resolution(self, bits):
         if bits not in RESOLUTION:
-            raise ValueError('Incorrect resolution. Must be 9, 10, 11, or 12.')
+            raise ValueError("Incorrect resolution. Must be 9, 10, 11, or 12.")
         self._buf[0] = 0  # TH register
         self._buf[1] = 0  # TL register
-        self._buf[2] = RESOLUTION.index(bits) << 5 | 0x1F # configuration register
+        self._buf[2] = RESOLUTION.index(bits) << 5 | 0x1F  # configuration register
         self._write_scratch(self._buf)
 
     def _convert_temp(self, timeout=_CONVERSION_TIMEOUT):
@@ -84,7 +85,9 @@ class DS18X20(object):
                 # 0 = conversion in progress, 1 = conversion done
                 while self._buf[0] == 0x00:
                     if time.monotonic() - start_time > timeout:
-                        raise RuntimeError('Timeout waiting for conversion to complete.')
+                        raise RuntimeError(
+                            "Timeout waiting for conversion to complete."
+                        )
                     dev.readinto(self._buf, end=1)
         return time.monotonic() - start_time
 
@@ -94,15 +97,14 @@ class DS18X20(object):
         if self._address.family_code == 0x10:
             if buf[1]:
                 t = buf[0] >> 1 | 0x80
-                t = -((~t + 1) & 0xff)
+                t = -((~t + 1) & 0xFF)
             else:
                 t = buf[0] >> 1
             return t - 0.25 + (buf[7] - buf[6]) / buf[7]
-        else:
-            t = buf[1] << 8 | buf[0]
-            if t & 0x8000: # sign bit set
-                t = -((t ^ 0xffff) + 1)
-            return t / 16
+        t = buf[1] << 8 | buf[0]
+        if t & 0x8000:  # sign bit set
+            t = -((t ^ 0xFFFF) + 1)
+        return t / 16
 
     def _read_scratch(self):
         with self._device as dev:

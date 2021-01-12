@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 ladyada for Adafruit Industries
+# SPDX-License-Identifier: MIT
+
 # Simple demo of printing the temperature from the first found DS18x20 sensor every second.
 # Using the asynchronous functions start_temperature_read() and
 # read_temperature() to allow the main loop to keep processing while

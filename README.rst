@@ -23,6 +23,8 @@ This driver depends on:
 * `Adafruit CircuitPython <https://github.com/adafruit/circuitpython>`_
 * `Adafruit OneWire <https://github.com/adafruit/Adafruit_CircuitPython_OneWire>`_
 
+**Note:** This library depends on the OneWire library and will **not** work on the Raspberry Pi
+
 Please ensure all dependencies are available on the CircuitPython filesystem.
 This is easily achieved by downloading
 `the Adafruit library and driver bundle <https://github.com/adafruit/Adafruit_CircuitPython_Bundle>`_.

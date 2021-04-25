@@ -9,6 +9,12 @@
 Driver for Dallas 1-Wire temperature sensor.
 
 * Author(s): Carter Nelson
+
+**Software and Dependencies:**
+
+* Adafruit CircuitPython firmware for the supported boards:
+  https://circuitpython.org/downloads
+
 """
 
 __version__ = "0.0.0-auto.0"
@@ -28,7 +34,35 @@ _CONVERSION_DELAY = {9: 0.09375, 10: 0.1875, 11: 0.375, 12: 0.750}
 
 
 class DS18X20:
-    """Class which provides interface to DS18X20 temperature sensor."""
+    """Class which provides interface to DS18X20 temperature sensor
+    :param  bus: The bus the DS18X20 is connected to
+    :param int address: The device address.
+
+    **Quickstart: Importing and using the device**
+
+        Here is an example of using the :class:`DS18X20` class.
+        First you will need to import the libraries to use the sensor
+
+        .. code-block:: python
+
+            import board
+            from adafruit_onewire.bus import OneWireBus
+            from adafruit_ds18x20 import DS18X20
+
+        Once this is done you can define your :class:`adafruit_onewire.bus.OneWireBus` object and define your sensor object
+
+        .. code-block:: python
+
+            ow_bus = OneWireBus(board.D5)
+            ds18 = DS18X20(ow_bus, ow_bus.scan()[0])
+
+        Now you have access to the :attr:`temperature` attribute
+
+        .. code-block:: python
+
+            temperature = ds18.temperature
+
+    """
 
     def __init__(self, bus, address):
         if address.family_code == 0x10 or address.family_code == 0x28:

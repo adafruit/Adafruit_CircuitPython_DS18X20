@@ -23,6 +23,8 @@ Table of Contents
 .. toctree::
     :caption: Tutorials
 
+    DS18B20 Learning Guide <https://learn.adafruit.com/using-ds18b20-temperature-sensor-with-circuitpython>
+
 .. toctree::
     :caption: Related Products
 

@@ -49,7 +49,8 @@ class DS18X20:
             from adafruit_onewire.bus import OneWireBus
             from adafruit_ds18x20 import DS18X20
 
-        Once this is done you can define your :class:`adafruit_onewire.bus.OneWireBus` object and define your sensor object
+        Once this is done you can define your :class:`adafruit_onewire.bus.OneWireBus`
+        object and define your sensor object
 
         .. code-block:: python
 

@@ -23,8 +23,6 @@ This driver depends on:
 * `Adafruit CircuitPython <https://github.com/adafruit/circuitpython>`_
 * `Adafruit OneWire <https://github.com/adafruit/Adafruit_CircuitPython_OneWire>`_
 
-**Note:** This library depends on the OneWire library and will **not** work on the Raspberry Pi
-
 Please ensure all dependencies are available on the CircuitPython filesystem.
 This is easily achieved by downloading
 `the Adafruit library and driver bundle <https://github.com/adafruit/Adafruit_CircuitPython_Bundle>`_.
@@ -37,6 +35,7 @@ Usage Example
     import board
     from adafruit_onewire.bus import OneWireBus
     from adafruit_ds18x20 import DS18X20
+
     ow_bus = OneWireBus(board.D2)
     ds18 = DS18X20(ow_bus, ow_bus.scan()[0])
     ds18.temperature

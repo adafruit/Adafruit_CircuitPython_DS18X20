@@ -2,8 +2,8 @@
 # These ROM codes need to be determined ahead of time. Use `ow_bus.scan()`.
 #
 # (1) Connect one sensor at a time
-# (2) Use `ow_bus.scan()` to determine ROM code
-# (3) Use ROM code to specify sensors
+# (2) Use `ow_bus.scan()[0].rom` to determine ROM code
+# (3) Use ROM code to specify sensors (see this example)
 
 import time
 import board

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020 ladyada for Adafruit Industries
+# SPDX-License-Identifier: MIT
+
 # Example of specifying multiple sensors using explicit ROM codes.
 # These ROM codes need to be determined ahead of time. Use `ow_bus.scan()`.
 #
@@ -18,6 +21,10 @@ ROM3 = b"(8`\xd4\x08\x00\x00i"
 
 # Initialize one-wire bus on board pin D5.
 ow_bus = OneWireBus(board.D5)
+
+# Uncomment this to get a listing of currently attached ROMs
+# for device in ow_bus.scan():
+#     print(device.rom)
 
 # Use pre-determined ROM codes for each sensors
 temp1 = DS18X20(ow_bus, OneWireAddress(ROM1))

@@ -66,7 +66,7 @@ class DS18X20:
     """
 
     def __init__(self, bus, address):
-        if address.family_code == 0x10 or address.family_code == 0x28:
+        if address.family_code in (0x10, 0x28):
             self._address = address
             self._device = OneWireDevice(bus, address)
             self._buf = bytearray(9)

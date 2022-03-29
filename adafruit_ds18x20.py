@@ -35,6 +35,7 @@ _CONVERSION_DELAY = {9: 0.09375, 10: 0.1875, 11: 0.375, 12: 0.750}
 
 class DS18X20:
     """Class which provides interface to DS18X20 temperature sensor
+
     :param  bus: The bus the DS18X20 is connected to
     :param int address: The device address.
 

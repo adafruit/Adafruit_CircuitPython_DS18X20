@@ -17,7 +17,7 @@ Driver for Dallas 1-Wire temperature sensor.
 
 """
 
-__version__ = "0.0.0-auto.0"
+__version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_DS18x20.git"
 
 import time

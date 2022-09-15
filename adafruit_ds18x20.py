@@ -27,7 +27,8 @@ from adafruit_onewire.device import OneWireDevice
 try:
     import typing  # pylint: disable=unused-import
     from typing_extensions import Literal
-    from circuitpython_typing import WriteableBuffer, ReadableBuffer
+    from circuitpython_typing import WriteableBuffer
+    from adafruit_onewire import OneWireBus  # pylint: disable=ungrouped-imports
 except ImportError:
     pass
 
@@ -73,7 +74,7 @@ class DS18X20:
 
     """
 
-    def __init__(self, bus: "OneWireBus", address: int) -> None:
+    def __init__(self, bus: OneWireBus, address: int) -> None:
         if address.family_code in (0x10, 0x28):
             self._address = address
             self._device = OneWireDevice(bus, address)
@@ -102,7 +103,7 @@ class DS18X20:
         self._buf[2] = RESOLUTION.index(bits) << 5 | 0x1F  # configuration register
         self._write_scratch(self._buf)
 
-    def _convert_temp(self, timeout: int = _CONVERSION_TIMEOUT) -> int:
+    def _convert_temp(self, timeout: int = _CONVERSION_TIMEOUT) -> float:
         with self._device as dev:
             dev.write(_CONVERT)
             start_time = time.monotonic()
@@ -132,7 +133,7 @@ class DS18X20:
             t = -((t ^ 0xFFFF) + 1)
         return t / 16
 
-    def _read_scratch(self) -> ReadableBuffer:
+    def _read_scratch(self) -> bytearray:
         with self._device as dev:
             dev.write(_RD_SCRATCH)
             dev.readinto(self._buf)

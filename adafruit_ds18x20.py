@@ -28,7 +28,7 @@ try:
     import typing  # pylint: disable=unused-import
     from typing_extensions import Literal
     from circuitpython_typing import WriteableBuffer
-    from adafruit_onewire import OneWireBus  # pylint: disable=ungrouped-imports
+    from adafruit_onewire.bus import OneWireBus  # pylint: disable=ungrouped-imports
 except ImportError:
     pass
 

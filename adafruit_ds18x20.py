@@ -24,6 +24,14 @@ import time
 from micropython import const
 from adafruit_onewire.device import OneWireDevice
 
+try:
+    import typing  # pylint: disable=unused-import
+    from typing_extensions import Literal
+    from circuitpython_typing import WriteableBuffer
+    from adafruit_onewire.bus import OneWireBus  # pylint: disable=ungrouped-imports
+except ImportError:
+    pass
+
 _CONVERT = b"\x44"
 _RD_SCRATCH = b"\xBE"
 _WR_SCRATCH = b"\x4E"
@@ -66,7 +74,7 @@ class DS18X20:
 
     """
 
-    def __init__(self, bus, address):
+    def __init__(self, bus: OneWireBus, address: int) -> None:
         if address.family_code in (0x10, 0x28):
             self._address = address
             self._device = OneWireDevice(bus, address)
@@ -82,12 +90,12 @@ class DS18X20:
         return self._read_temp()
 
     @property
-    def resolution(self):
+    def resolution(self) -> Literal[9, 10, 11, 12]:
         """The programmable resolution. 9, 10, 11, or 12 bits."""
         return RESOLUTION[self._read_scratch()[4] >> 5 & 0x03]
 
     @resolution.setter
-    def resolution(self, bits):
+    def resolution(self, bits: Literal[9, 10, 11, 12]) -> None:
         if bits not in RESOLUTION:
             raise ValueError("Incorrect resolution. Must be 9, 10, 11, or 12.")
         self._buf[0] = 0  # TH register
@@ -95,7 +103,7 @@ class DS18X20:
         self._buf[2] = RESOLUTION.index(bits) << 5 | 0x1F  # configuration register
         self._write_scratch(self._buf)
 
-    def _convert_temp(self, timeout=_CONVERSION_TIMEOUT):
+    def _convert_temp(self, timeout: int = _CONVERSION_TIMEOUT) -> float:
         with self._device as dev:
             dev.write(_CONVERT)
             start_time = time.monotonic()
@@ -110,7 +118,7 @@ class DS18X20:
                     dev.readinto(self._buf, end=1)
         return time.monotonic() - start_time
 
-    def _read_temp(self):
+    def _read_temp(self) -> float:
         # pylint: disable=invalid-name
         buf = self._read_scratch()
         if self._address.family_code == 0x10:
@@ -125,25 +133,25 @@ class DS18X20:
             t = -((t ^ 0xFFFF) + 1)
         return t / 16
 
-    def _read_scratch(self):
+    def _read_scratch(self) -> bytearray:
         with self._device as dev:
             dev.write(_RD_SCRATCH)
             dev.readinto(self._buf)
         return self._buf
 
-    def _write_scratch(self, buf):
+    def _write_scratch(self, buf: WriteableBuffer) -> None:
         with self._device as dev:
             dev.write(_WR_SCRATCH)
             dev.write(buf, end=3)
 
-    def start_temperature_read(self):
+    def start_temperature_read(self) -> float:
         """Start asynchronous conversion, returns immediately.
         Returns maximum conversion delay [seconds] based on resolution."""
         with self._device as dev:
             dev.write(_CONVERT)
         return _CONVERSION_DELAY[self.resolution]
 
-    def read_temperature(self):
+    def read_temperature(self) -> float:
         """Read the temperature. No polling of the conversion busy bit
         (assumes that the conversion has completed)."""
         return self._read_temp()

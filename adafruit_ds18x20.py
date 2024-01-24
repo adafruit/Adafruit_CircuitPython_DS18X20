@@ -158,8 +158,7 @@ class DS18X20:
 
     @property
     def address(self):
-        """Returns the address of the device. Might be useful if there are multiple sensors on
-        the bus.
+        """The address of the device. Useful if there are multiple sensors on the bus.
 
         Note: this property is read only."""
         return self._address

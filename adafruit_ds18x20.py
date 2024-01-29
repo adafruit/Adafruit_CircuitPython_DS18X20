@@ -155,3 +155,10 @@ class DS18X20:
         """Read the temperature. No polling of the conversion busy bit
         (assumes that the conversion has completed)."""
         return self._read_temp()
+
+    @property
+    def address(self):
+        """The address of the device. Useful if there are multiple sensors on the bus.
+
+        Note: this property is read only."""
+        return self._address

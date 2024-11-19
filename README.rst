@@ -22,7 +22,9 @@ CircuitPython driver for Dallas 1-Wire temperature sensor.
 
 .. warning::
     This module is supported only on CircuitPython microcontrollers currently.
-    Blinka for RPi / SBC does not currently support OneWire.
+    Blinka for RPi / SBC does not currently support OneWire directly. However,
+    you can use the `DS2482S-800 <https://github.com/adafruit/Adafruit_CircuitPython_DS248x>`_
+    as an I2C to OneWire bridge, see: `Learn Guide <https://learn.adafruit.com/adafruit-ds2482s-800-8-channel-i2c-to-1-wire-bus-adapter/circuitpython-and-python>`_
 
 Dependencies
 =============

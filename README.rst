@@ -20,6 +20,10 @@ Introduction
 
 CircuitPython driver for Dallas 1-Wire temperature sensor.
 
+.. warning::
+    This module is supported only on CircuitPython microcontrollers currently.
+    Blinka for RPi / SBC does not currently support OneWire.
+
 Dependencies
 =============
 This driver depends on:

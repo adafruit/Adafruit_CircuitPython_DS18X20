@@ -22,13 +22,14 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_DS18x20.git"
 
 import time
 from micropython import const
-from adafruit_onewire.device import OneWireAddress, OneWireDevice
+from adafruit_onewire.device import OneWireDevice
 
 try:
     import typing  # pylint: disable=unused-import
     from typing_extensions import Literal
     from circuitpython_typing import WriteableBuffer
     from adafruit_onewire.bus import OneWireBus  # pylint: disable=ungrouped-imports
+    from adafruit_onewire.device import OneWireAddress
 except ImportError:
     pass
 

@@ -29,6 +29,7 @@ try:
     from typing_extensions import Literal
     from circuitpython_typing import WriteableBuffer
     from adafruit_onewire.bus import OneWireBus  # pylint: disable=ungrouped-imports
+    from adafruit_onewire.device import OneWireAddress
 except ImportError:
     pass
 
@@ -36,7 +37,7 @@ _CONVERT = b"\x44"
 _RD_SCRATCH = b"\xBE"
 _WR_SCRATCH = b"\x4E"
 _CONVERSION_TIMEOUT = const(1)
-RESOLUTION = (9, 10, 11, 12)
+RESOLUTION: tuple[Literal[9, 10, 11, 12], ...] = (9, 10, 11, 12)
 # Maximum conversion delay in seconds, from DS18B20 datasheet.
 _CONVERSION_DELAY = {9: 0.09375, 10: 0.1875, 11: 0.375, 12: 0.750}
 
@@ -74,7 +75,7 @@ class DS18X20:
 
     """
 
-    def __init__(self, bus: OneWireBus, address: int) -> None:
+    def __init__(self, bus: OneWireBus, address: OneWireAddress) -> None:
         if address.family_code in (0x10, 0x28):
             self._address = address
             self._device = OneWireDevice(bus, address)
@@ -84,7 +85,7 @@ class DS18X20:
             raise ValueError("Incorrect family code in device address.")
 
     @property
-    def temperature(self):
+    def temperature(self) -> float:
         """The temperature in degrees Celsius."""
         self._convert_temp()
         return self._read_temp()

@@ -10,10 +10,11 @@
 # A 4.7Kohm pullup between DATA and POWER is REQUIRED!
 
 import time
+
 import board
 from adafruit_onewire.bus import OneWireBus
-from adafruit_ds18x20 import DS18X20
 
+from adafruit_ds18x20 import DS18X20
 
 # Initialize one-wire bus on board pin D1.
 ow_bus = OneWireBus(board.D1)
@@ -30,5 +31,5 @@ while True:
     while time.monotonic() < conversion_ready_at:
         print(".", end="")
         time.sleep(0.1)
-    print("\nTemperature: {0:0.3f}C\n".format(ds18.read_temperature()))
+    print(f"\nTemperature: {ds18.read_temperature():0.3f}C\n")
     time.sleep(1.0)

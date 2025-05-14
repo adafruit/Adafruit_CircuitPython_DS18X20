@@ -21,21 +21,23 @@ __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_DS18x20.git"
 
 import time
-from micropython import const
+
 from adafruit_onewire.device import OneWireDevice
+from micropython import const
 
 try:
-    import typing  # pylint: disable=unused-import
-    from typing_extensions import Literal
-    from circuitpython_typing import WriteableBuffer
-    from adafruit_onewire.bus import OneWireBus  # pylint: disable=ungrouped-imports
+    import typing
+
+    from adafruit_onewire.bus import OneWireBus
     from adafruit_onewire.device import OneWireAddress
+    from circuitpython_typing import WriteableBuffer
+    from typing_extensions import Literal
 except ImportError:
     pass
 
 _CONVERT = b"\x44"
-_RD_SCRATCH = b"\xBE"
-_WR_SCRATCH = b"\x4E"
+_RD_SCRATCH = b"\xbe"
+_WR_SCRATCH = b"\x4e"
 _CONVERSION_TIMEOUT = const(1)
 RESOLUTION: tuple[Literal[9, 10, 11, 12], ...] = (9, 10, 11, 12)
 # Maximum conversion delay in seconds, from DS18B20 datasheet.
@@ -76,7 +78,7 @@ class DS18X20:
     """
 
     def __init__(self, bus: OneWireBus, address: OneWireAddress) -> None:
-        if address.family_code in (0x10, 0x28):
+        if address.family_code in {0x10, 0x28}:
             self._address = address
             self._device = OneWireDevice(bus, address)
             self._buf = bytearray(9)
@@ -113,14 +115,11 @@ class DS18X20:
                 # 0 = conversion in progress, 1 = conversion done
                 while self._buf[0] == 0x00:
                     if time.monotonic() - start_time > timeout:
-                        raise RuntimeError(
-                            "Timeout waiting for conversion to complete."
-                        )
+                        raise RuntimeError("Timeout waiting for conversion to complete.")
                     dev.readinto(self._buf, end=1)
         return time.monotonic() - start_time
 
     def _read_temp(self) -> float:
-        # pylint: disable=invalid-name
         buf = self._read_scratch()
         if self._address.family_code == 0x10:
             if buf[1]:

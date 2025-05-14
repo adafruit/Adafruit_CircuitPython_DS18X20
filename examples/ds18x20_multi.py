@@ -9,8 +9,10 @@
 # (3) Use ROM code to specify sensors (see this example)
 
 import time
+
 import board
-from adafruit_onewire.bus import OneWireBus, OneWireAddress
+from adafruit_onewire.bus import OneWireAddress, OneWireBus
+
 from adafruit_ds18x20 import DS18X20
 
 # !!!! REPLACE THESE WITH ROM CODES FOR YOUR SENSORS !!!!
@@ -33,8 +35,8 @@ temp3 = DS18X20(ow_bus, OneWireAddress(ROM3))
 
 # Main loop to print the temperatures every second.
 while True:
-    print("Temperature 1 = {}".format(temp1.temperature))
-    print("Temperature 2 = {}".format(temp2.temperature))
-    print("Temperature 3 = {}".format(temp3.temperature))
+    print(f"Temperature 1 = {temp1.temperature}")
+    print(f"Temperature 2 = {temp2.temperature}")
+    print(f"Temperature 3 = {temp3.temperature}")
     print("-" * 20)
     time.sleep(1)
